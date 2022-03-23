@@ -1,0 +1,18 @@
+using Unity.Entities;
+
+public class GenericComponentDataSystem : SystemBase
+{
+	public struct GenericDataType<T> : IComponentData where T : unmanaged
+	{
+		public T value;
+	}
+
+	protected override void OnUpdate()
+	{
+		base.EntityManager.CreateEntity(typeof(GenericDataType<int>));
+		SetSingleton(new GenericDataType<int>
+		{
+			value = 10
+		});
+	}
+}

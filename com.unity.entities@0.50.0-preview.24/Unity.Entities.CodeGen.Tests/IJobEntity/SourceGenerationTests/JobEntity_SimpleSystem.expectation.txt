@@ -1,0 +1,58 @@
+using System.Runtime.CompilerServices;
+using Unity.Entities;
+using Unity.Jobs;
+
+[CompilerGenerated]
+public class JobEntity_SimpleSystem : SystemBase
+{
+	private EntityQuery __query_0;
+
+	private ComponentTypeHandle<Rotation> __Rotation_RW_ComponentTypeHandle;
+
+	private ComponentTypeHandle<RotationSpeed_ForEach> __RotationSpeed_ForEach_RO_ComponentTypeHandle;
+
+	protected override void OnUpdate()
+	{
+		MyEntityJob myEntityJob = default(MyEntityJob);
+		myEntityJob.DeltaTime = base.Time.DeltaTime;
+		MyEntityJob myEntityJob2 = myEntityJob;
+		base.Dependency = myEntityJob2.ScheduleParallel(base.Dependency);
+	}
+
+	[DOTSCompilerPatchedMethod("OnUpdate")]
+	protected void __OnUpdate_1CEB2AFF()
+	{
+		MyEntityJob myEntityJob = default(MyEntityJob);
+		myEntityJob.DeltaTime = base.Time.DeltaTime;
+		MyEntityJob job = myEntityJob;
+		base.Dependency = __ScheduleViaJobEntityBatchExtension_0(job, __query_0, base.Dependency);
+	}
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	private JobHandle __ScheduleViaJobEntityBatchExtension_0(MyEntityJob job, EntityQuery entityQuery, JobHandle dependency)
+	{
+		__Rotation_RW_ComponentTypeHandle.Update(this);
+		__RotationSpeed_ForEach_RO_ComponentTypeHandle.Update(this);
+		job.__RotationTypeHandle = __Rotation_RW_ComponentTypeHandle;
+		job.__RotationSpeed_ForEachTypeHandle = __RotationSpeed_ForEach_RO_ComponentTypeHandle;
+		return JobEntityBatchExtensions.ScheduleParallel(job, entityQuery, dependency);
+	}
+
+	protected override void OnCreateForCompiler()
+	{
+		base.OnCreateForCompiler();
+		__query_0 = GetEntityQuery(new EntityQueryDesc
+		{
+			All = new ComponentType[2]
+			{
+				ComponentType.ReadOnly<RotationSpeed_ForEach>(),
+				ComponentType.ReadWrite<Rotation>()
+			},
+			Any = new ComponentType[0],
+			None = new ComponentType[0],
+			Options = EntityQueryOptions.Default
+		});
+		__Rotation_RW_ComponentTypeHandle = GetComponentTypeHandle<Rotation>();
+		__RotationSpeed_ForEach_RO_ComponentTypeHandle = GetComponentTypeHandle<RotationSpeed_ForEach>(isReadOnly: true);
+	}
+}

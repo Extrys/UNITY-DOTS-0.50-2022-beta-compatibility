@@ -1,0 +1,152 @@
+using System;
+using System.Runtime.CompilerServices;
+using Unity.Burst;
+using Unity.Entities;
+using Unity.Entities.CodeGen.Tests;
+
+namespace EntitiesForEachInNested.Namespaces
+{
+	[CompilerGenerated]
+	internal class AndClasses
+	{
+		[CompilerGenerated]
+		private class SomeSystem : SystemBase
+		{
+			[NoAlias]
+			[BurstCompile(FloatMode = FloatMode.Default, FloatPrecision = FloatPrecision.Standard, CompileSynchronously = false)]
+			private struct SomeSystem_LambdaJob_0_Job : IJobEntityBatch
+			{
+				public ComponentTypeHandle<Translation> __translationTypeHandle;
+
+				[MethodImpl(MethodImplOptions.AggressiveInlining)]
+				private void OriginalLambdaBody([NoAlias] ref Translation translation)
+				{
+					translation.Value += 1f;
+				}
+
+				public void Execute(ArchetypeChunk chunk, int batchIndex)
+				{
+					IntPtr nativeArrayPtr = InternalCompilerInterface.UnsafeGetChunkNativeArrayIntPtr(chunk, __translationTypeHandle);
+					int count = chunk.Count;
+					for (int i = 0; i != count; i++)
+					{
+						OriginalLambdaBody(ref InternalCompilerInterface.UnsafeGetRefToNativeArrayPtrElement<Translation>(nativeArrayPtr, i));
+					}
+				}
+			}
+
+			private EntityQuery SomeSystem_LambdaJob_0_Query;
+
+			private ComponentTypeHandle<Translation> __Unity_Entities_CodeGen_Tests_Translation_RW_ComponentTypeHandle;
+
+			protected override void OnUpdate()
+			{
+				LambdaJobDescriptionExecutionMethods.Schedule(base.Entities.ForEach(delegate(ref Translation translation)
+				{
+					translation.Value += 1f;
+				}));
+			}
+
+			[DOTSCompilerPatchedMethod("OnUpdate")]
+			protected void __OnUpdate_49E5C832()
+			{
+				SomeSystem_LambdaJob_0_Execute();
+			}
+
+			private void SomeSystem_LambdaJob_0_Execute()
+			{
+				__Unity_Entities_CodeGen_Tests_Translation_RW_ComponentTypeHandle.Update(this);
+				SomeSystem_LambdaJob_0_Job someSystem_LambdaJob_0_Job = default(SomeSystem_LambdaJob_0_Job);
+				someSystem_LambdaJob_0_Job.__translationTypeHandle = __Unity_Entities_CodeGen_Tests_Translation_RW_ComponentTypeHandle;
+				SomeSystem_LambdaJob_0_Job jobData = someSystem_LambdaJob_0_Job;
+				base.Dependency = JobEntityBatchExtensions.Schedule(jobData, SomeSystem_LambdaJob_0_Query, base.Dependency);
+			}
+
+			protected override void OnCreateForCompiler()
+			{
+				base.OnCreateForCompiler();
+				SomeSystem_LambdaJob_0_Query = GetEntityQuery(new EntityQueryDesc
+				{
+					All = new ComponentType[1]
+					{
+						ComponentType.ReadWrite<Translation>()
+					},
+					Any = new ComponentType[0],
+					None = new ComponentType[0],
+					Options = EntityQueryOptions.Default
+				});
+				__Unity_Entities_CodeGen_Tests_Translation_RW_ComponentTypeHandle = GetComponentTypeHandle<Translation>();
+			}
+		}
+
+		[CompilerGenerated]
+		private class SomeOtherSystem : SystemBase
+		{
+			[NoAlias]
+			[BurstCompile(FloatMode = FloatMode.Default, FloatPrecision = FloatPrecision.Standard, CompileSynchronously = false)]
+			private struct SomeOtherSystem_LambdaJob_0_Job : IJobEntityBatch
+			{
+				public ComponentTypeHandle<Translation> __translationTypeHandle;
+
+				[MethodImpl(MethodImplOptions.AggressiveInlining)]
+				private void OriginalLambdaBody([NoAlias] ref Translation translation)
+				{
+					translation.Value += 1f;
+				}
+
+				public void Execute(ArchetypeChunk chunk, int batchIndex)
+				{
+					IntPtr nativeArrayPtr = InternalCompilerInterface.UnsafeGetChunkNativeArrayIntPtr(chunk, __translationTypeHandle);
+					int count = chunk.Count;
+					for (int i = 0; i != count; i++)
+					{
+						OriginalLambdaBody(ref InternalCompilerInterface.UnsafeGetRefToNativeArrayPtrElement<Translation>(nativeArrayPtr, i));
+					}
+				}
+			}
+
+			private EntityQuery SomeOtherSystem_LambdaJob_0_Query;
+
+			private ComponentTypeHandle<Translation> __Unity_Entities_CodeGen_Tests_Translation_RW_ComponentTypeHandle;
+
+			protected override void OnUpdate()
+			{
+				LambdaJobDescriptionExecutionMethods.Schedule(base.Entities.ForEach(delegate(ref Translation translation)
+				{
+					translation.Value += 1f;
+				}));
+			}
+
+			[DOTSCompilerPatchedMethod("OnUpdate")]
+			protected void __OnUpdate_D7A50D4()
+			{
+				SomeOtherSystem_LambdaJob_0_Execute();
+			}
+
+			private void SomeOtherSystem_LambdaJob_0_Execute()
+			{
+				__Unity_Entities_CodeGen_Tests_Translation_RW_ComponentTypeHandle.Update(this);
+				SomeOtherSystem_LambdaJob_0_Job someOtherSystem_LambdaJob_0_Job = default(SomeOtherSystem_LambdaJob_0_Job);
+				someOtherSystem_LambdaJob_0_Job.__translationTypeHandle = __Unity_Entities_CodeGen_Tests_Translation_RW_ComponentTypeHandle;
+				SomeOtherSystem_LambdaJob_0_Job jobData = someOtherSystem_LambdaJob_0_Job;
+				base.Dependency = JobEntityBatchExtensions.Schedule(jobData, SomeOtherSystem_LambdaJob_0_Query, base.Dependency);
+			}
+
+			protected override void OnCreateForCompiler()
+			{
+				base.OnCreateForCompiler();
+				SomeOtherSystem_LambdaJob_0_Query = GetEntityQuery(new EntityQueryDesc
+				{
+					All = new ComponentType[1]
+					{
+						ComponentType.ReadWrite<Translation>()
+					},
+					Any = new ComponentType[0],
+					None = new ComponentType[0],
+					Options = EntityQueryOptions.Default
+				});
+				__Unity_Entities_CodeGen_Tests_Translation_RW_ComponentTypeHandle = GetComponentTypeHandle<Translation>();
+			}
+		}
+	}
+}

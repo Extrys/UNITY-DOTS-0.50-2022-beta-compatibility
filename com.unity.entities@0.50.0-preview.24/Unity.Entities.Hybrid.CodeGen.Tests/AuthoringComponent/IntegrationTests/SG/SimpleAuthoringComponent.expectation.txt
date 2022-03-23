@@ -1,0 +1,20 @@
+using System.Runtime.CompilerServices;
+using Unity.Entities;
+using UnityEngine;
+
+[DisallowMultipleComponent]
+[CompilerGenerated]
+public class SimpleAuthoringComponentAuthoring : MonoBehaviour, IConvertGameObjectToEntity
+{
+	public float FloatValue;
+
+	public int IntValue;
+
+	public void Convert(Entity __entity, EntityManager __dstManager, GameObjectConversionSystem __conversionSystem)
+	{
+		SimpleAuthoringComponent componentData = default(SimpleAuthoringComponent);
+		componentData.FloatValue = FloatValue;
+		componentData.IntValue = IntValue;
+		__dstManager.AddComponentData(__entity, componentData);
+	}
+}

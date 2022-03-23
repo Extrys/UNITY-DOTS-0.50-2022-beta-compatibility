@@ -1,0 +1,68 @@
+using System.Runtime.CompilerServices;
+using Unity.Entities;
+using Unity.Jobs;
+
+[CompilerGenerated]
+public class JobEntityCalledWithIndirectionSystem : SystemBase
+{
+	private EntityQuery __query_0;
+
+	private ComponentTypeHandle<Rotation> __Rotation_RW_ComponentTypeHandle;
+
+	private ComponentTypeHandle<RotationSpeed_ForEach> __RotationSpeed_ForEach_RO_ComponentTypeHandle;
+
+	protected override void OnUpdate()
+	{
+		Method2();
+	}
+
+	private void Method1()
+	{
+		Method2();
+	}
+
+	private void Method2()
+	{
+		MyJobEntity myJobEntity = default(MyJobEntity);
+		myJobEntity.DeltaTime = base.Time.DeltaTime;
+		MyJobEntity myJobEntity2 = myJobEntity;
+		base.Dependency = myJobEntity2.ScheduleParallel(base.Dependency);
+	}
+
+	[DOTSCompilerPatchedMethod("Method2")]
+	private void __Method2_72EC3C2E()
+	{
+		MyJobEntity myJobEntity = default(MyJobEntity);
+		myJobEntity.DeltaTime = base.Time.DeltaTime;
+		MyJobEntity job = myJobEntity;
+		base.Dependency = __ScheduleViaJobEntityBatchExtension_0(job, __query_0, base.Dependency);
+	}
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	private JobHandle __ScheduleViaJobEntityBatchExtension_0(MyJobEntity job, EntityQuery entityQuery, JobHandle dependency)
+	{
+		__Rotation_RW_ComponentTypeHandle.Update(this);
+		__RotationSpeed_ForEach_RO_ComponentTypeHandle.Update(this);
+		job.__RotationTypeHandle = __Rotation_RW_ComponentTypeHandle;
+		job.__RotationSpeed_ForEachTypeHandle = __RotationSpeed_ForEach_RO_ComponentTypeHandle;
+		return JobEntityBatchExtensions.ScheduleParallel(job, entityQuery, dependency);
+	}
+
+	protected override void OnCreateForCompiler()
+	{
+		base.OnCreateForCompiler();
+		__query_0 = GetEntityQuery(new EntityQueryDesc
+		{
+			All = new ComponentType[2]
+			{
+				ComponentType.ReadOnly<RotationSpeed_ForEach>(),
+				ComponentType.ReadWrite<Rotation>()
+			},
+			Any = new ComponentType[0],
+			None = new ComponentType[0],
+			Options = EntityQueryOptions.Default
+		});
+		__Rotation_RW_ComponentTypeHandle = GetComponentTypeHandle<Rotation>();
+		__RotationSpeed_ForEach_RO_ComponentTypeHandle = GetComponentTypeHandle<RotationSpeed_ForEach>(isReadOnly: true);
+	}
+}

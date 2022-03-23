@@ -1,0 +1,159 @@
+using System;
+using System.Runtime.CompilerServices;
+using Unity.Burst;
+using Unity.Collections;
+using Unity.Collections.LowLevel.Unsafe;
+using Unity.Entities;
+using Unity.Entities.CodeGen.Tests;
+using Unity.Entities.CodeGeneratedJobForEach;
+using Unity.Entities.Tests;
+
+[CompilerGenerated]
+internal class EntitiesForEachCapturing : SystemBase
+{
+	[NoAlias]
+	[BurstCompile(FloatMode = FloatMode.Deterministic, FloatPrecision = FloatPrecision.High, CompileSynchronously = true)]
+	private struct EntitiesForEachCapturing_LambdaJob_0_Job : IJobEntityBatchWithIndex
+	{
+		[ReadOnly]
+		[NativeDisableContainerSafetyRestriction]
+		[DeallocateOnJobCompletion]
+		public NativeArray<float> innerCapturedFloats;
+
+		[NativeDisableUnsafePtrRestriction]
+		public unsafe byte* innerRawPtr;
+
+		public float innerScopeFloat;
+
+		[ReadOnly]
+		public EntityTypeHandle __myEntityTypeHandle;
+
+		public BufferTypeHandle<MyBufferInt> __myBufferIntsTypeHandle;
+
+		public ComponentTypeHandle<Translation> __translationTypeHandle;
+
+		[ReadOnly]
+		public ComponentTypeHandle<Acceleration> __accelerationTypeHandle;
+
+		public BufferTypeHandle<MyBufferFloat> __myBufferFloatTypeHandle;
+
+		private EcsTestData LocalMethodThatReturnsValue()
+		{
+			return default(EcsTestData);
+		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private unsafe void OriginalLambdaBody(int entityInQueryIndex, Entity myEntity, DynamicBuffer<MyBufferInt> myBufferInts, [NoAlias] ref Translation translation, [NoAlias] in Acceleration acceleration, DynamicBuffer<MyBufferFloat> myBufferFloat)
+		{
+			LocalMethodThatReturnsValue();
+			translation.Value += innerCapturedFloats[2] + acceleration.Value + (float)entityInQueryIndex + (float)myEntity.Version + (float)myBufferInts[2].Value + innerScopeFloat + myBufferFloat[0].Value;
+			Console.Write(innerRawPtr->ToString());
+		}
+
+		public void Execute(ArchetypeChunk chunk, int batchIndex, int indexOfFirstEntityInQuery)
+		{
+			IntPtr nativeArrayPtr = InternalCompilerInterface.UnsafeGetChunkEntityArrayIntPtr(chunk, __myEntityTypeHandle);
+			BufferAccessor<MyBufferInt> bufferAccessor = chunk.GetBufferAccessor(__myBufferIntsTypeHandle);
+			IntPtr nativeArrayPtr2 = InternalCompilerInterface.UnsafeGetChunkNativeArrayIntPtr(chunk, __translationTypeHandle);
+			IntPtr nativeArrayPtr3 = InternalCompilerInterface.UnsafeGetChunkNativeArrayReadOnlyIntPtr(chunk, __accelerationTypeHandle);
+			BufferAccessor<MyBufferFloat> bufferAccessor2 = chunk.GetBufferAccessor(__myBufferFloatTypeHandle);
+			int count = chunk.Count;
+			for (int i = 0; i != count; i++)
+			{
+				int entityInQueryIndex = indexOfFirstEntityInQuery + i;
+				OriginalLambdaBody(entityInQueryIndex, InternalCompilerInterface.UnsafeGetCopyOfNativeArrayPtrElement<Entity>(nativeArrayPtr, i), bufferAccessor[i], ref InternalCompilerInterface.UnsafeGetRefToNativeArrayPtrElement<Translation>(nativeArrayPtr2, i), in InternalCompilerInterface.UnsafeGetRefToNativeArrayPtrElement<Acceleration>(nativeArrayPtr3, i), bufferAccessor2[i]);
+			}
+		}
+	}
+
+	private EntityQuery m_Query;
+
+	private EntityQuery EntitiesForEachCapturing_LambdaJob_0_Query;
+
+	private ComponentTypeHandle<Translation> __Unity_Entities_CodeGen_Tests_Translation_RW_ComponentTypeHandle;
+
+	private ComponentTypeHandle<Acceleration> __Unity_Entities_CodeGen_Tests_Acceleration_RO_ComponentTypeHandle;
+
+	protected unsafe override void OnUpdate()
+	{
+		NativeArray<float> innerCapturedFloats = new NativeArray<float>(1, Allocator.TempJob, NativeArrayOptions.UninitializedMemory);
+		innerCapturedFloats[0] = 456f;
+		byte* innerRawPtr = (byte*)(void*)IntPtr.Zero;
+		float innerScopeFloat = 2f;
+		LambdaJobDescriptionExecutionMethods.Schedule(base.Entities.WithBurst(FloatMode.Deterministic, FloatPrecision.High, synchronousCompilation: true).WithEntityQueryOptions(EntityQueryOptions.IncludeDisabled).WithChangeFilter<Translation>()
+			.WithNone<Boid>()
+			.WithAll<Velocity>()
+			.WithReadOnly(innerCapturedFloats)
+			.WithDisposeOnCompletion(innerCapturedFloats)
+			.WithNativeDisableContainerSafetyRestriction(innerCapturedFloats)
+			.WithNativeDisableUnsafePtrRestriction<ForEachLambdaJobDescription, byte>(innerRawPtr)
+			.WithStoreEntityQueryInField(ref m_Query)
+			.ForEach(delegate(int entityInQueryIndex, Entity myEntity, DynamicBuffer<MyBufferInt> myBufferInts, ref Translation translation, in Acceleration acceleration, in DynamicBuffer<MyBufferFloat> myBufferFloat)
+			{
+				LocalMethodThatReturnsValue();
+				translation.Value += innerCapturedFloats[2] + acceleration.Value + (float)entityInQueryIndex + (float)myEntity.Version + (float)myBufferInts[2].Value + innerScopeFloat + myBufferFloat[0].Value;
+				Console.Write(innerRawPtr->ToString());
+			}));
+		static EcsTestData LocalMethodThatReturnsValue()
+		{
+			return default(EcsTestData);
+		}
+	}
+
+	[DOTSCompilerPatchedMethod("OnUpdate")]
+	protected unsafe void __OnUpdate_5ECAC093()
+	{
+		NativeArray<float> innerCapturedFloats = new NativeArray<float>(1, Allocator.TempJob, NativeArrayOptions.UninitializedMemory)
+		{
+			[0] = 456f
+		};
+		byte* innerRawPtr = (byte*)(void*)IntPtr.Zero;
+		float innerScopeFloat = 2f;
+		EntitiesForEachCapturing_LambdaJob_0_Execute(innerCapturedFloats, innerRawPtr, innerScopeFloat);
+	}
+
+	private unsafe void EntitiesForEachCapturing_LambdaJob_0_Execute(NativeArray<float> innerCapturedFloats, byte* innerRawPtr, float innerScopeFloat)
+	{
+		__Unity_Entities_CodeGen_Tests_Translation_RW_ComponentTypeHandle.Update(this);
+		__Unity_Entities_CodeGen_Tests_Acceleration_RO_ComponentTypeHandle.Update(this);
+		EntitiesForEachCapturing_LambdaJob_0_Job entitiesForEachCapturing_LambdaJob_0_Job = default(EntitiesForEachCapturing_LambdaJob_0_Job);
+		entitiesForEachCapturing_LambdaJob_0_Job.innerCapturedFloats = innerCapturedFloats;
+		entitiesForEachCapturing_LambdaJob_0_Job.innerRawPtr = innerRawPtr;
+		entitiesForEachCapturing_LambdaJob_0_Job.innerScopeFloat = innerScopeFloat;
+		entitiesForEachCapturing_LambdaJob_0_Job.__myEntityTypeHandle = GetEntityTypeHandle();
+		entitiesForEachCapturing_LambdaJob_0_Job.__myBufferIntsTypeHandle = GetBufferTypeHandle<MyBufferInt>();
+		entitiesForEachCapturing_LambdaJob_0_Job.__translationTypeHandle = __Unity_Entities_CodeGen_Tests_Translation_RW_ComponentTypeHandle;
+		entitiesForEachCapturing_LambdaJob_0_Job.__accelerationTypeHandle = __Unity_Entities_CodeGen_Tests_Acceleration_RO_ComponentTypeHandle;
+		entitiesForEachCapturing_LambdaJob_0_Job.__myBufferFloatTypeHandle = GetBufferTypeHandle<MyBufferFloat>(isReadOnly: true);
+		EntitiesForEachCapturing_LambdaJob_0_Job jobData = entitiesForEachCapturing_LambdaJob_0_Job;
+		base.Dependency = JobEntityBatchIndexExtensions.Schedule(jobData, EntitiesForEachCapturing_LambdaJob_0_Query, base.Dependency);
+	}
+
+	protected override void OnCreateForCompiler()
+	{
+		base.OnCreateForCompiler();
+		m_Query = (EntitiesForEachCapturing_LambdaJob_0_Query = GetEntityQuery(new EntityQueryDesc
+		{
+			All = new ComponentType[5]
+			{
+				ComponentType.ReadOnly<Acceleration>(),
+				ComponentType.ReadOnly<MyBufferFloat>(),
+				ComponentType.ReadOnly<Velocity>(),
+				ComponentType.ReadWrite<MyBufferInt>(),
+				ComponentType.ReadWrite<Translation>()
+			},
+			Any = new ComponentType[0],
+			None = new ComponentType[1]
+			{
+				ComponentType.ReadOnly<Boid>()
+			},
+			Options = EntityQueryOptions.IncludeDisabled
+		}));
+		EntitiesForEachCapturing_LambdaJob_0_Query.SetChangedVersionFilter(new ComponentType[1]
+		{
+			ComponentType.ReadWrite<Translation>()
+		});
+		__Unity_Entities_CodeGen_Tests_Translation_RW_ComponentTypeHandle = GetComponentTypeHandle<Translation>();
+		__Unity_Entities_CodeGen_Tests_Acceleration_RO_ComponentTypeHandle = GetComponentTypeHandle<Acceleration>(isReadOnly: true);
+	}
+}

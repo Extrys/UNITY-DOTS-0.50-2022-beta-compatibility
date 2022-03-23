@@ -1,0 +1,83 @@
+using System.Runtime.CompilerServices;
+using Unity.Entities;
+
+[CompilerGenerated]
+internal class OneQueryForEachSingletonAccessType : SystemBase
+{
+	private EntityQuery __query_0;
+
+	private EntityQuery __query_1;
+
+	protected override void OnUpdate()
+	{
+		GetSet_FirstTime();
+		GetSet_SecondTime();
+	}
+
+	private void GetSet_FirstTime()
+	{
+		float value = GetSingleton<SingletonData>().Value;
+		value += 10f;
+		SetSingleton(new SingletonData
+		{
+			Value = value
+		});
+	}
+
+	private void GetSet_SecondTime()
+	{
+		float value = GetSingleton<SingletonData>().Value;
+		value += 10f;
+		SingletonData singletonData = default(SingletonData);
+		singletonData.Value = value;
+		SingletonData singleton = singletonData;
+		SetSingleton(singleton);
+	}
+
+	[DOTSCompilerPatchedMethod("GetSet_FirstTime")]
+	private void __GetSet_FirstTime_B4E64B8()
+	{
+		float value = __query_0.GetSingleton<SingletonData>().Value;
+		value += 10f;
+		__query_1.SetSingleton(new SingletonData
+		{
+			Value = value
+		});
+	}
+
+	[DOTSCompilerPatchedMethod("GetSet_SecondTime")]
+	private void __GetSet_SecondTime_C1CFA5C()
+	{
+		float value = __query_0.GetSingleton<SingletonData>().Value;
+		value += 10f;
+		SingletonData singletonData = default(SingletonData);
+		singletonData.Value = value;
+		SingletonData singleton = singletonData;
+		__query_1.SetSingleton(singleton);
+	}
+
+	protected override void OnCreateForCompiler()
+	{
+		base.OnCreateForCompiler();
+		__query_0 = GetEntityQuery(new EntityQueryDesc
+		{
+			All = new ComponentType[1]
+			{
+				ComponentType.ReadOnly<SingletonData>()
+			},
+			Any = new ComponentType[0],
+			None = new ComponentType[0],
+			Options = EntityQueryOptions.Default
+		});
+		__query_1 = GetEntityQuery(new EntityQueryDesc
+		{
+			All = new ComponentType[1]
+			{
+				ComponentType.ReadWrite<SingletonData>()
+			},
+			Any = new ComponentType[0],
+			None = new ComponentType[0],
+			Options = EntityQueryOptions.Default
+		});
+	}
+}

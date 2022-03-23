@@ -1,0 +1,52 @@
+using System.Runtime.CompilerServices;
+using Unity.Entities;
+using Unity.Entities.Tests;
+using UnityEngine;
+
+[CompilerGenerated]
+public class AccessingGenericSingletonsSystem : SystemBase
+{
+	private EntityQuery __query_0;
+
+	protected override void OnUpdate()
+	{
+		base.EntityManager.CreateEntity(typeof(EcsTestData));
+		GenericMethodWithSingletonAccess(new EcsTestData(10));
+		if (GetSingleton<EcsTestData>().value == 10)
+		{
+			Debug.Log("Yay!");
+		}
+	}
+
+	private T GenericMethodWithSingletonAccess<T>(T value) where T : struct, IComponentData
+	{
+		SetSingleton(value);
+		return GetSingleton<T>();
+	}
+
+	[DOTSCompilerPatchedMethod("OnUpdate")]
+	protected void __OnUpdate_383A4B9F()
+	{
+		base.EntityManager.CreateEntity(typeof(EcsTestData));
+		GenericMethodWithSingletonAccess(new EcsTestData(10));
+		if (__query_0.GetSingleton<EcsTestData>().value == 10)
+		{
+			Debug.Log("Yay!");
+		}
+	}
+
+	protected override void OnCreateForCompiler()
+	{
+		base.OnCreateForCompiler();
+		__query_0 = GetEntityQuery(new EntityQueryDesc
+		{
+			All = new ComponentType[1]
+			{
+				ComponentType.ReadOnly<EcsTestData>()
+			},
+			Any = new ComponentType[0],
+			None = new ComponentType[0],
+			Options = EntityQueryOptions.Default
+		});
+	}
+}

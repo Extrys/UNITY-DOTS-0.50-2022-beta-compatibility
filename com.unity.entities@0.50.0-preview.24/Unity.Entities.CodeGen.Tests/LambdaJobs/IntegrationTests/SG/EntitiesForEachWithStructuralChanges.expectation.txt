@@ -1,0 +1,120 @@
+using System.Runtime.CompilerServices;
+using Unity.Entities;
+using Unity.Entities.CodeGen.Tests;
+using Unity.Entities.CodeGen.Tests.TestTypes;
+
+[CompilerGenerated]
+internal class EntitiesForEachWithStructuralChanges : SystemBase
+{
+	private struct EntitiesForEachWithStructuralChanges_LambdaJob_0_Job
+	{
+		public EntitiesForEachWithStructuralChanges __this;
+
+		public float delta;
+
+		private void OriginalLambdaBody(Entity id, SpeedInAnotherAssembly managedData, SharedDataInAnotherAssembly sharedData, ref TranslationInAnotherAssembly refData, DynamicBuffer<TestBufferElementInAnotherAssembly> dynamicBuffer, in VelocityInAnotherAssembly inData, in TagComponentInAnotherAssembly inTag)
+		{
+			refData.Value += inData.Value + (float)sharedData.Value + delta;
+			if (refData.Value > 10f)
+			{
+				__this.EntityManager.RemoveComponent<Translation>(id);
+			}
+			dynamicBuffer.Add(managedData.Value);
+		}
+
+		public void RunWithStructuralChange(EntityQuery query)
+		{
+			EntityQueryMask entityQueryMask = __this.EntityManager.GetEntityQueryMask(query);
+			InternalCompilerInterface.UnsafeCreateGatherEntitiesResult(ref query, out EntityQuery.GatherEntitiesResult result);
+			int typeIndex = TypeManager.GetTypeIndex<TranslationInAnotherAssembly>();
+			int typeIndex2 = TypeManager.GetTypeIndex<VelocityInAnotherAssembly>();
+			try
+			{
+				int entityCount = result.EntityCount;
+				for (int i = 0; i != entityCount; i++)
+				{
+					Entity entity = InternalCompilerInterface.UnsafeGetEntityFromGatheredEntities(ref result, i);
+					if (entityQueryMask.Matches(entity))
+					{
+						SpeedInAnotherAssembly componentObject = __this.EntityManager.GetComponentObject<SpeedInAnotherAssembly>(entity);
+						SharedDataInAnotherAssembly sharedComponentData = __this.EntityManager.GetSharedComponentData<SharedDataInAnotherAssembly>(entity);
+						TranslationInAnotherAssembly originalComponent;
+						TranslationInAnotherAssembly refData = InternalCompilerInterface.GetComponentData(__this.EntityManager, entity, typeIndex, out originalComponent);
+						DynamicBuffer<TestBufferElementInAnotherAssembly> buffer = __this.EntityManager.GetBuffer<TestBufferElementInAnotherAssembly>(entity);
+						VelocityInAnotherAssembly originalComponent2;
+						VelocityInAnotherAssembly inData = InternalCompilerInterface.GetComponentData(__this.EntityManager, entity, typeIndex2, out originalComponent2);
+						TagComponentInAnotherAssembly inTag = default(TagComponentInAnotherAssembly);
+						OriginalLambdaBody(entity, componentObject, sharedComponentData, ref refData, buffer, in inData, in inTag);
+						InternalCompilerInterface.WriteComponentData(__this.EntityManager, entity, typeIndex, ref refData, ref originalComponent);
+					}
+				}
+			}
+			finally
+			{
+				InternalCompilerInterface.UnsafeReleaseGatheredEntities(ref query, ref result);
+			}
+		}
+	}
+
+	private EntityQuery EntitiesForEachWithStructuralChanges_LambdaJob_0_Query;
+
+	private ComponentTypeHandle<TranslationInAnotherAssembly> __Unity_Entities_CodeGen_Tests_TestTypes_TranslationInAnotherAssembly_RW_ComponentTypeHandle;
+
+	private ComponentTypeHandle<VelocityInAnotherAssembly> __Unity_Entities_CodeGen_Tests_TestTypes_VelocityInAnotherAssembly_RO_ComponentTypeHandle;
+
+	protected override void OnUpdate()
+	{
+		float delta = 5f;
+		LambdaJobDescriptionExecutionMethods.Run(base.Entities.WithoutBurst().WithStructuralChanges().ForEach(delegate(Entity id, SpeedInAnotherAssembly managedData, SharedDataInAnotherAssembly sharedData, ref TranslationInAnotherAssembly refData, ref DynamicBuffer<TestBufferElementInAnotherAssembly> dynamicBuffer, in VelocityInAnotherAssembly inData, in TagComponentInAnotherAssembly inTag)
+		{
+			refData.Value += inData.Value + (float)sharedData.Value + delta;
+			if (refData.Value > 10f)
+			{
+				base.EntityManager.RemoveComponent<Translation>(id);
+			}
+			dynamicBuffer.Add(managedData.Value);
+		}));
+	}
+
+	[DOTSCompilerPatchedMethod("OnUpdate")]
+	protected void __OnUpdate_22CCFD0C()
+	{
+		float delta = 5f;
+		EntitiesForEachWithStructuralChanges_LambdaJob_0_Execute(ref delta);
+	}
+
+	private void EntitiesForEachWithStructuralChanges_LambdaJob_0_Execute(ref float delta)
+	{
+		__Unity_Entities_CodeGen_Tests_TestTypes_TranslationInAnotherAssembly_RW_ComponentTypeHandle.Update(this);
+		__Unity_Entities_CodeGen_Tests_TestTypes_VelocityInAnotherAssembly_RO_ComponentTypeHandle.Update(this);
+		EntitiesForEachWithStructuralChanges_LambdaJob_0_Job entitiesForEachWithStructuralChanges_LambdaJob_0_Job = default(EntitiesForEachWithStructuralChanges_LambdaJob_0_Job);
+		entitiesForEachWithStructuralChanges_LambdaJob_0_Job.__this = this;
+		entitiesForEachWithStructuralChanges_LambdaJob_0_Job.delta = delta;
+		EntitiesForEachWithStructuralChanges_LambdaJob_0_Job entitiesForEachWithStructuralChanges_LambdaJob_0_Job2 = entitiesForEachWithStructuralChanges_LambdaJob_0_Job;
+		CompleteDependency();
+		entitiesForEachWithStructuralChanges_LambdaJob_0_Job2.RunWithStructuralChange(EntitiesForEachWithStructuralChanges_LambdaJob_0_Query);
+		delta = entitiesForEachWithStructuralChanges_LambdaJob_0_Job2.delta;
+	}
+
+	protected override void OnCreateForCompiler()
+	{
+		base.OnCreateForCompiler();
+		EntitiesForEachWithStructuralChanges_LambdaJob_0_Query = GetEntityQuery(new EntityQueryDesc
+		{
+			All = new ComponentType[6]
+			{
+				ComponentType.ReadOnly<VelocityInAnotherAssembly>(),
+				ComponentType.ReadOnly<TagComponentInAnotherAssembly>(),
+				ComponentType.ReadWrite<SpeedInAnotherAssembly>(),
+				ComponentType.ReadWrite<SharedDataInAnotherAssembly>(),
+				ComponentType.ReadWrite<TranslationInAnotherAssembly>(),
+				ComponentType.ReadWrite<TestBufferElementInAnotherAssembly>()
+			},
+			Any = new ComponentType[0],
+			None = new ComponentType[0],
+			Options = EntityQueryOptions.Default
+		});
+		__Unity_Entities_CodeGen_Tests_TestTypes_TranslationInAnotherAssembly_RW_ComponentTypeHandle = GetComponentTypeHandle<TranslationInAnotherAssembly>();
+		__Unity_Entities_CodeGen_Tests_TestTypes_VelocityInAnotherAssembly_RO_ComponentTypeHandle = GetComponentTypeHandle<VelocityInAnotherAssembly>(isReadOnly: true);
+	}
+}

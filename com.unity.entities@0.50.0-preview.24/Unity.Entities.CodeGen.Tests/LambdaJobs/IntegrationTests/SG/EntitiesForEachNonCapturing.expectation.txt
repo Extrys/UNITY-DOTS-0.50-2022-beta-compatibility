@@ -1,0 +1,110 @@
+using AOT;
+using System;
+using System.Runtime.CompilerServices;
+using Unity.Burst;
+using Unity.Entities;
+using Unity.Jobs.LowLevel.Unsafe;
+
+[CompilerGenerated]
+internal class EntitiesForEachNonCapturing : SystemBase
+{
+	[NoAlias]
+	[BurstCompile(FloatMode = FloatMode.Default, FloatPrecision = FloatPrecision.Standard, CompileSynchronously = false)]
+	private struct EntitiesForEachNonCapturing_LambdaJob_0_Job : IJobEntityBatch
+	{
+		internal static InternalCompilerInterface.JobEntityBatchRunWithoutJobSystemDelegate FunctionPtrFieldNoBurst;
+
+		internal static InternalCompilerInterface.JobEntityBatchRunWithoutJobSystemDelegate FunctionPtrFieldBurst;
+
+		public ComponentTypeHandle<Translation> __translationTypeHandle;
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private void OriginalLambdaBody([NoAlias] ref Translation translation, [NoAlias] ref TagComponent1 tag1, [NoAlias] in TagComponent2 tag2)
+		{
+			translation.Value += 5f;
+		}
+
+		public void Execute(ArchetypeChunk chunk, int batchIndex)
+		{
+			IntPtr nativeArrayPtr = InternalCompilerInterface.UnsafeGetChunkNativeArrayIntPtr(chunk, __translationTypeHandle);
+			int count = chunk.Count;
+			for (int i = 0; i != count; i++)
+			{
+				TagComponent1 tag = default(TagComponent1);
+				TagComponent2 tag2 = default(TagComponent2);
+				OriginalLambdaBody(ref InternalCompilerInterface.UnsafeGetRefToNativeArrayPtrElement<Translation>(nativeArrayPtr, i), ref tag, in tag2);
+			}
+		}
+
+		[BurstCompile(FloatMode = FloatMode.Default, FloatPrecision = FloatPrecision.Standard, CompileSynchronously = false)]
+		[MonoPInvokeCallback(typeof(InternalCompilerInterface.JobEntityBatchRunWithoutJobSystemDelegate))]
+		public static void RunWithoutJobSystem(ref ArchetypeChunkIterator archetypeChunkIterator, IntPtr jobPtr)
+		{
+			try
+			{
+				JobEntityBatchExtensions.RunWithoutJobsInternal(ref InternalCompilerInterface.UnsafeAsRef<EntitiesForEachNonCapturing_LambdaJob_0_Job>(jobPtr), ref archetypeChunkIterator);
+			}
+			finally
+			{
+			}
+		}
+	}
+
+	private EntityQuery EntitiesForEachNonCapturing_LambdaJob_0_Query;
+
+	private ComponentTypeHandle<Translation> __Translation_RW_ComponentTypeHandle;
+
+	protected override void OnUpdate()
+	{
+		LambdaJobDescriptionExecutionMethods.Run(base.Entities.ForEach(delegate(ref Translation translation, ref TagComponent1 tag1, in TagComponent2 tag2)
+		{
+			translation.Value += 5f;
+		}));
+	}
+
+	[DOTSCompilerPatchedMethod("OnUpdate")]
+	protected void __OnUpdate_FEFD826()
+	{
+		EntitiesForEachNonCapturing_LambdaJob_0_Execute();
+	}
+
+	private void EntitiesForEachNonCapturing_LambdaJob_0_Execute()
+	{
+		__Translation_RW_ComponentTypeHandle.Update(this);
+		EntitiesForEachNonCapturing_LambdaJob_0_Job entitiesForEachNonCapturing_LambdaJob_0_Job = default(EntitiesForEachNonCapturing_LambdaJob_0_Job);
+		entitiesForEachNonCapturing_LambdaJob_0_Job.__translationTypeHandle = __Translation_RW_ComponentTypeHandle;
+		EntitiesForEachNonCapturing_LambdaJob_0_Job jobData = entitiesForEachNonCapturing_LambdaJob_0_Job;
+		CompleteDependency();
+		InternalCompilerInterface.JobEntityBatchRunWithoutJobSystemDelegate functionPointer = JobsUtility.JobCompilerEnabled ? EntitiesForEachNonCapturing_LambdaJob_0_Job.FunctionPtrFieldBurst : EntitiesForEachNonCapturing_LambdaJob_0_Job.FunctionPtrFieldNoBurst;
+		InternalCompilerInterface.UnsafeRunJobEntityBatch(ref jobData, EntitiesForEachNonCapturing_LambdaJob_0_Query, functionPointer);
+	}
+
+	protected override void OnCreateForCompiler()
+	{
+		base.OnCreateForCompiler();
+		EntitiesForEachNonCapturing_LambdaJob_0_Query = GetEntityQuery(new EntityQueryDesc
+		{
+			All = new ComponentType[3]
+			{
+				ComponentType.ReadOnly<TagComponent1>(),
+				ComponentType.ReadOnly<TagComponent2>(),
+				ComponentType.ReadWrite<Translation>()
+			},
+			Any = new ComponentType[0],
+			None = new ComponentType[0],
+			Options = EntityQueryOptions.Default
+		});
+		__Translation_RW_ComponentTypeHandle = GetComponentTypeHandle<Translation>();
+		EntitiesForEachNonCapturing_LambdaJob_0_Job.FunctionPtrFieldNoBurst = delegate(ref ArchetypeChunkIterator archetypeChunkIterator, IntPtr jobPtr)
+		{
+			try
+			{
+				JobEntityBatchExtensions.RunWithoutJobsInternal(ref InternalCompilerInterface.UnsafeAsRef<EntitiesForEachNonCapturing_LambdaJob_0_Job>(jobPtr), ref archetypeChunkIterator);
+			}
+			finally
+			{
+			}
+		};
+		EntitiesForEachNonCapturing_LambdaJob_0_Job.FunctionPtrFieldBurst = InternalCompilerInterface.BurstCompile(EntitiesForEachNonCapturing_LambdaJob_0_Job.FunctionPtrFieldNoBurst);
+	}
+}

@@ -1,0 +1,17 @@
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("Unity.Entities.Editor")]
+[assembly: InternalsVisibleTo("Unity.Entities.Editor.Tests")]
+[assembly: InternalsVisibleTo("Unity.Entities.Hybrid")]
+[assembly: InternalsVisibleTo("Unity.Entities.Hybrid.EndToEnd.Tests")]
+[assembly: InternalsVisibleTo("Unity.Entities.Runtime.Build")]
+[assembly: InternalsVisibleTo("Unity.Entities.Runtime.Build.Tests")]
+[assembly: InternalsVisibleTo("Unity.Rendering.Hybrid.Tests")]
+[assembly: InternalsVisibleTo("Unity.Runtime.UnityInstance")]
+[assembly: InternalsVisibleTo("Unity.Scenes.Editor")]
+[assembly: InternalsVisibleTo("Unity.Scenes.Editor.Tests")]
+[assembly: InternalsVisibleTo("Unity.Scenes.Hybrid.Tests")]
+[assembly: InternalsVisibleTo("Unity.Scenes.Hybrid.Tests.Playmode")]
+[assembly: InternalsVisibleTo("Unity.Scenes.PerformanceTests")]
+[assembly: InternalsVisibleTo("Unity.Scenes.Tests")]
+[assembly: InternalsVisibleTo("Unity.Tiny.Authoring")]

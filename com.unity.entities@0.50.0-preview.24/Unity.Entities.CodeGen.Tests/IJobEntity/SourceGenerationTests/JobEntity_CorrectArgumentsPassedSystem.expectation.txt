@@ -1,0 +1,79 @@
+using System.Runtime.CompilerServices;
+using Unity.Collections;
+using Unity.Entities;
+using Unity.Jobs;
+using Unity.Mathematics;
+
+[CompilerGenerated]
+public class JobEntity_CorrectArgumentsPassedSystem : SystemBase
+{
+	private NativeList<Entity> _addRequestList;
+
+	private EntityQuery __query_0;
+
+	private ComponentTypeHandle<Rotation> __Rotation_RO_ComponentTypeHandle;
+
+	protected override void OnCreate()
+	{
+		_addRequestList = new NativeList<Entity>(Allocator.Persistent);
+	}
+
+	protected override void OnUpdate()
+	{
+		Random random = default(Random);
+		StreamingLogicConfig streamingLogicConfig = default(StreamingLogicConfig);
+		streamingLogicConfig.DistanceForStreamingIn = random.NextFloat();
+		streamingLogicConfig.DistanceForStreamingOut = random.NextFloat();
+		StreamingLogicConfig streamingLogicConfig2 = streamingLogicConfig;
+		StreamSubScenesIn streamSubScenesIn = default(StreamSubScenesIn);
+		streamSubScenesIn.AddRequestList = _addRequestList;
+		streamSubScenesIn.CameraPosition = float3.zero;
+		streamSubScenesIn.MaxDistanceSquared = TestMath.Multiply(TestMath.AddTwo(1f / (streamingLogicConfig2.DistanceForStreamingIn * (10f + streamingLogicConfig2.DistanceForStreamingOut)) - 5f), 42f);
+		streamSubScenesIn.MinDistanceSquared = streamingLogicConfig2.DistanceForStreamingIn / streamingLogicConfig2.DistanceForStreamingOut;
+		StreamSubScenesIn streamSubScenesIn2 = streamSubScenesIn;
+		base.Dependency = streamSubScenesIn2.Schedule(base.Dependency);
+	}
+
+	[DOTSCompilerPatchedMethod("OnUpdate")]
+	protected void __OnUpdate_4ADAE197()
+	{
+		Random random = default(Random);
+		StreamingLogicConfig streamingLogicConfig = default(StreamingLogicConfig);
+		streamingLogicConfig.DistanceForStreamingIn = random.NextFloat();
+		streamingLogicConfig.DistanceForStreamingOut = random.NextFloat();
+		StreamingLogicConfig streamingLogicConfig2 = streamingLogicConfig;
+		StreamSubScenesIn streamSubScenesIn = default(StreamSubScenesIn);
+		streamSubScenesIn.AddRequestList = _addRequestList;
+		streamSubScenesIn.CameraPosition = float3.zero;
+		streamSubScenesIn.MaxDistanceSquared = TestMath.Multiply(TestMath.AddTwo(1f / (streamingLogicConfig2.DistanceForStreamingIn * (10f + streamingLogicConfig2.DistanceForStreamingOut)) - 5f), 42f);
+		streamSubScenesIn.MinDistanceSquared = streamingLogicConfig2.DistanceForStreamingIn / streamingLogicConfig2.DistanceForStreamingOut;
+		StreamSubScenesIn job = streamSubScenesIn;
+		base.Dependency = __ScheduleViaJobEntityBatchExtension_0(job, __query_0, base.Dependency);
+	}
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	private JobHandle __ScheduleViaJobEntityBatchExtension_0(StreamSubScenesIn job, EntityQuery entityQuery, JobHandle dependency)
+	{
+		__Rotation_RO_ComponentTypeHandle.Update(this);
+		job.__EntityTypeHandle = GetEntityTypeHandle();
+		job.__RotationTypeHandle = __Rotation_RO_ComponentTypeHandle;
+		return JobEntityBatchExtensions.Schedule(job, entityQuery, dependency);
+	}
+
+	protected override void OnCreateForCompiler()
+	{
+		base.OnCreateForCompiler();
+		__query_0 = GetEntityQuery(new EntityQueryDesc
+		{
+			All = new ComponentType[2]
+			{
+				ComponentType.ReadOnly<Rotation>(),
+				ComponentType.ReadWrite<Entity>()
+			},
+			Any = new ComponentType[0],
+			None = new ComponentType[0],
+			Options = EntityQueryOptions.Default
+		});
+		__Rotation_RO_ComponentTypeHandle = GetComponentTypeHandle<Rotation>(isReadOnly: true);
+	}
+}

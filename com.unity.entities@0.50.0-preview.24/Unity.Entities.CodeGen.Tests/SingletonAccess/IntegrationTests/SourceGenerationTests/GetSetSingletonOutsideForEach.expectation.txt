@@ -1,0 +1,58 @@
+using System.Runtime.CompilerServices;
+using Unity.Entities;
+
+[CompilerGenerated]
+internal class GetSetSingletonOutsideForEach : SystemBase
+{
+	private EntityQuery __query_0;
+
+	private EntityQuery __query_1;
+
+	protected override void OnUpdate()
+	{
+		float value = GetSingleton<SingletonData>().Value;
+		value += 10f;
+		SetSingleton(new SingletonData
+		{
+			Value = value
+		});
+		GetSingletonEntity<SingletonData>();
+	}
+
+	[DOTSCompilerPatchedMethod("OnUpdate")]
+	protected void __OnUpdate_755ECAA5()
+	{
+		float value = __query_0.GetSingleton<SingletonData>().Value;
+		value += 10f;
+		__query_1.SetSingleton(new SingletonData
+		{
+			Value = value
+		});
+		__query_0.GetSingletonEntity();
+	}
+
+	protected override void OnCreateForCompiler()
+	{
+		base.OnCreateForCompiler();
+		__query_0 = GetEntityQuery(new EntityQueryDesc
+		{
+			All = new ComponentType[1]
+			{
+				ComponentType.ReadOnly<SingletonData>()
+			},
+			Any = new ComponentType[0],
+			None = new ComponentType[0],
+			Options = EntityQueryOptions.Default
+		});
+		__query_1 = GetEntityQuery(new EntityQueryDesc
+		{
+			All = new ComponentType[1]
+			{
+				ComponentType.ReadWrite<SingletonData>()
+			},
+			Any = new ComponentType[0],
+			None = new ComponentType[0],
+			Options = EntityQueryOptions.Default
+		});
+	}
+}

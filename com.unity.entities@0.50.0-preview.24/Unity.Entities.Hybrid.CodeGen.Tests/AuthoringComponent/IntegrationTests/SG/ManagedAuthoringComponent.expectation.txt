@@ -1,0 +1,39 @@
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using Unity.Entities;
+using Unity.Entities.Hybrid.Internal;
+using UnityEngine;
+
+[DisallowMultipleComponent]
+[CompilerGenerated]
+public class ManagedAuthoringComponentAuthoring : MonoBehaviour, IConvertGameObjectToEntity, IDeclareReferencedPrefabs
+{
+	public float FloatValue;
+
+	public int IntValue;
+
+	public string StringValue;
+
+	public GameObject Prefab;
+
+	public GameObject[] ListOfPrefabs;
+
+	public void Convert(Entity __entity, EntityManager __dstManager, GameObjectConversionSystem __conversionSystem)
+	{
+		ManagedAuthoringComponent managedAuthoringComponent = new ManagedAuthoringComponent
+		{
+			FloatValue = FloatValue,
+			IntValue = IntValue,
+			StringValue = StringValue,
+			Prefab = __conversionSystem.GetPrimaryEntity(Prefab)
+		};
+		GameObjectConversionUtility.ConvertGameObjectsToEntitiesField(__conversionSystem, ListOfPrefabs, out managedAuthoringComponent.ListOfPrefabs);
+		EntityManagerManagedComponentExtensions.AddComponentData(__dstManager, __entity, managedAuthoringComponent);
+	}
+
+	public void DeclareReferencedPrefabs(List<GameObject> __referencedPrefabs)
+	{
+		GeneratedAuthoringComponentImplementation.AddReferencedPrefab(__referencedPrefabs, Prefab);
+		GeneratedAuthoringComponentImplementation.AddReferencedPrefabs(__referencedPrefabs, ListOfPrefabs);
+	}
+}

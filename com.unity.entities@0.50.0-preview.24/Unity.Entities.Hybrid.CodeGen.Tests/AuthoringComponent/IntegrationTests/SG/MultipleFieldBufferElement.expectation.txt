@@ -1,0 +1,37 @@
+using System;
+using System.Runtime.CompilerServices;
+using Unity.Entities;
+using UnityEngine;
+
+[DisallowMultipleComponent]
+[CompilerGenerated]
+public class MultipleFieldBufferElementAuthoringComponentAuthoring : MonoBehaviour, IConvertGameObjectToEntity
+{
+	[Serializable]
+	[CompilerGenerated]
+	public struct ___MultipleFieldBufferElementAuthoringComponentGeneratedStruct___
+	{
+		public bool MyBool;
+
+		public float MyFloat;
+
+		public int MyInt;
+	}
+
+	public ___MultipleFieldBufferElementAuthoringComponentGeneratedStruct___[] Values;
+
+	public void Convert(Entity __entity, EntityManager __dstManager, GameObjectConversionSystem _)
+	{
+		DynamicBuffer<MultipleFieldBufferElementAuthoringComponent> dynamicBuffer = __dstManager.AddBuffer<MultipleFieldBufferElementAuthoringComponent>(__entity);
+		dynamicBuffer.ResizeUninitialized(Values.Length);
+		for (int i = 0; i < dynamicBuffer.Length; i++)
+		{
+			dynamicBuffer[i] = new MultipleFieldBufferElementAuthoringComponent
+			{
+				MyBool = Values[i].MyBool,
+				MyFloat = Values[i].MyFloat,
+				MyInt = Values[i].MyInt
+			};
+		}
+	}
+}

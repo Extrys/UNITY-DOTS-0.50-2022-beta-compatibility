@@ -1,0 +1,99 @@
+using System;
+using System.Runtime.CompilerServices;
+using Unity.Entities;
+using Unity.Entities.CodeGen.Tests;
+
+[CompilerGenerated]
+internal class EntitiesForEachInForLoop : SystemBase
+{
+	private struct EntitiesForEachInForLoop_LambdaJob_0_Job : IJobEntityBatch
+	{
+		public int captureMe;
+
+		public int innerCapture;
+
+		public ComponentTypeHandle<Translation> __translationTypeHandle;
+
+		private void OriginalLambdaBody(ref Translation translation)
+		{
+			translation.Value += captureMe + innerCapture;
+		}
+
+		public void Execute(ArchetypeChunk chunk, int batchIndex)
+		{
+			IntPtr nativeArrayPtr = InternalCompilerInterface.UnsafeGetChunkNativeArrayIntPtr(chunk, __translationTypeHandle);
+			int count = chunk.Count;
+			for (int i = 0; i != count; i++)
+			{
+				OriginalLambdaBody(ref InternalCompilerInterface.UnsafeGetRefToNativeArrayPtrElement<Translation>(nativeArrayPtr, i));
+			}
+		}
+	}
+
+	private EntityQuery EntitiesForEachInForLoop_LambdaJob_0_Query;
+
+	private ComponentTypeHandle<Translation> __Unity_Entities_CodeGen_Tests_Translation_RW_ComponentTypeHandle;
+
+	protected static T EnsureNotOptimizedAway<T>(T x)
+	{
+		return x;
+	}
+
+	protected override void OnUpdate()
+	{
+		int captureMe = 3;
+		for (int i = 0; i != 3; i++)
+		{
+			int innerCapture = 4;
+			LambdaJobDescriptionExecutionMethods.Run(base.Entities.WithoutBurst().ForEach(delegate(ref Translation translation)
+			{
+				translation.Value += captureMe + innerCapture;
+			}));
+			EnsureNotOptimizedAway(captureMe);
+			EnsureNotOptimizedAway(innerCapture);
+		}
+	}
+
+	[DOTSCompilerPatchedMethod("OnUpdate")]
+	protected void __OnUpdate_77F868FC()
+	{
+		int captureMe = 3;
+		for (int i = 0; i != 3; i++)
+		{
+			int innerCapture = 4;
+			EntitiesForEachInForLoop_LambdaJob_0_Execute(ref captureMe, ref innerCapture);
+			EnsureNotOptimizedAway(captureMe);
+			EnsureNotOptimizedAway(innerCapture);
+		}
+	}
+
+	private void EntitiesForEachInForLoop_LambdaJob_0_Execute(ref int captureMe, ref int innerCapture)
+	{
+		__Unity_Entities_CodeGen_Tests_Translation_RW_ComponentTypeHandle.Update(this);
+		EntitiesForEachInForLoop_LambdaJob_0_Job entitiesForEachInForLoop_LambdaJob_0_Job = default(EntitiesForEachInForLoop_LambdaJob_0_Job);
+		entitiesForEachInForLoop_LambdaJob_0_Job.captureMe = captureMe;
+		entitiesForEachInForLoop_LambdaJob_0_Job.innerCapture = innerCapture;
+		entitiesForEachInForLoop_LambdaJob_0_Job.__translationTypeHandle = __Unity_Entities_CodeGen_Tests_Translation_RW_ComponentTypeHandle;
+		EntitiesForEachInForLoop_LambdaJob_0_Job jobData = entitiesForEachInForLoop_LambdaJob_0_Job;
+		CompleteDependency();
+		JobEntityBatchExtensions.RunWithoutJobs(ref jobData, EntitiesForEachInForLoop_LambdaJob_0_Query);
+		captureMe = jobData.captureMe;
+		innerCapture = jobData.innerCapture;
+	}
+
+	protected override void OnCreateForCompiler()
+	{
+		base.OnCreateForCompiler();
+		EntitiesForEachInForLoop_LambdaJob_0_Query = GetEntityQuery(new EntityQueryDesc
+		{
+			All = new ComponentType[1]
+			{
+				ComponentType.ReadWrite<Translation>()
+			},
+			Any = new ComponentType[0],
+			None = new ComponentType[0],
+			Options = EntityQueryOptions.Default
+		});
+		__Unity_Entities_CodeGen_Tests_Translation_RW_ComponentTypeHandle = GetComponentTypeHandle<Translation>();
+	}
+}

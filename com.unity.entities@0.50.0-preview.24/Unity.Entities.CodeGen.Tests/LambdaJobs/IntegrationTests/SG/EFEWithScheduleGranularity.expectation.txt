@@ -1,0 +1,124 @@
+using System;
+using System.Runtime.CompilerServices;
+using Unity.Burst;
+using Unity.Collections;
+using Unity.Entities;
+using Unity.Entities.CodeGen.Tests;
+using Unity.Entities.UniversalDelegates;
+
+[CompilerGenerated]
+internal class EFEWithScheduleGranularity : SystemBase
+{
+	[NoAlias]
+	[BurstCompile(FloatMode = FloatMode.Default, FloatPrecision = FloatPrecision.Standard, CompileSynchronously = false)]
+	private struct EFEWithScheduleGranularity_LambdaJob_0_Job : IJobEntityBatch
+	{
+		public ComponentTypeHandle<Translation> __tTypeHandle;
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private void OriginalLambdaBody([NoAlias] ref Translation t)
+		{
+		}
+
+		public void Execute(ArchetypeChunk chunk, int batchIndex)
+		{
+			IntPtr nativeArrayPtr = InternalCompilerInterface.UnsafeGetChunkNativeArrayIntPtr(chunk, __tTypeHandle);
+			int count = chunk.Count;
+			for (int i = 0; i != count; i++)
+			{
+				OriginalLambdaBody(ref InternalCompilerInterface.UnsafeGetRefToNativeArrayPtrElement<Translation>(nativeArrayPtr, i));
+			}
+		}
+	}
+
+	[NoAlias]
+	[BurstCompile(FloatMode = FloatMode.Default, FloatPrecision = FloatPrecision.Standard, CompileSynchronously = false)]
+	private struct EFEWithScheduleGranularity_LambdaJob_1_Job : IJobEntityBatch
+	{
+		public ComponentTypeHandle<Translation> __tTypeHandle;
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private void OriginalLambdaBody([NoAlias] ref Translation t)
+		{
+		}
+
+		public void Execute(ArchetypeChunk chunk, int batchIndex)
+		{
+			IntPtr nativeArrayPtr = InternalCompilerInterface.UnsafeGetChunkNativeArrayIntPtr(chunk, __tTypeHandle);
+			int count = chunk.Count;
+			for (int i = 0; i != count; i++)
+			{
+				OriginalLambdaBody(ref InternalCompilerInterface.UnsafeGetRefToNativeArrayPtrElement<Translation>(nativeArrayPtr, i));
+			}
+		}
+	}
+
+	private EntityQuery EFEWithScheduleGranularity_LambdaJob_0_Query;
+
+	private EntityQuery EFEWithScheduleGranularity_LambdaJob_1_Query;
+
+	private ComponentTypeHandle<Translation> __Unity_Entities_CodeGen_Tests_Translation_RW_ComponentTypeHandle;
+
+	protected override void OnUpdate()
+	{
+		base.Entities.WithScheduleGranularity(ScheduleGranularity.Chunk).ForEach((R<Translation>)delegate
+		{
+		}).ScheduleParallel();
+		base.Entities.WithScheduleGranularity(ScheduleGranularity.Entity).ForEach((R<Translation>)delegate
+		{
+		}).ScheduleParallel();
+	}
+
+	[DOTSCompilerPatchedMethod("OnUpdate")]
+	protected void __OnUpdate_19465C28()
+	{
+		EFEWithScheduleGranularity_LambdaJob_0_Execute();
+		EFEWithScheduleGranularity_LambdaJob_1_Execute();
+	}
+
+	private void EFEWithScheduleGranularity_LambdaJob_0_Execute()
+	{
+		__Unity_Entities_CodeGen_Tests_Translation_RW_ComponentTypeHandle.Update(this);
+		EFEWithScheduleGranularity_LambdaJob_0_Job eFEWithScheduleGranularity_LambdaJob_0_Job = default(EFEWithScheduleGranularity_LambdaJob_0_Job);
+		eFEWithScheduleGranularity_LambdaJob_0_Job.__tTypeHandle = __Unity_Entities_CodeGen_Tests_Translation_RW_ComponentTypeHandle;
+		EFEWithScheduleGranularity_LambdaJob_0_Job jobData = eFEWithScheduleGranularity_LambdaJob_0_Job;
+		base.Dependency = JobEntityBatchExtensions.ScheduleParallel(jobData, EFEWithScheduleGranularity_LambdaJob_0_Query, ScheduleGranularity.Chunk, default(NativeArray<Entity>), base.Dependency);
+	}
+
+	private void EFEWithScheduleGranularity_LambdaJob_1_Execute()
+	{
+		__Unity_Entities_CodeGen_Tests_Translation_RW_ComponentTypeHandle.Update(this);
+		EFEWithScheduleGranularity_LambdaJob_1_Job eFEWithScheduleGranularity_LambdaJob_1_Job = default(EFEWithScheduleGranularity_LambdaJob_1_Job);
+		eFEWithScheduleGranularity_LambdaJob_1_Job.__tTypeHandle = __Unity_Entities_CodeGen_Tests_Translation_RW_ComponentTypeHandle;
+		EFEWithScheduleGranularity_LambdaJob_1_Job jobData = eFEWithScheduleGranularity_LambdaJob_1_Job;
+		base.Dependency = JobEntityBatchExtensions.ScheduleParallel(jobData, EFEWithScheduleGranularity_LambdaJob_1_Query, ScheduleGranularity.Entity, default(NativeArray<Entity>), base.Dependency);
+	}
+
+	protected override void OnCreateForCompiler()
+	{
+		base.OnCreateForCompiler();
+		EFEWithScheduleGranularity_LambdaJob_0_Query = GetEntityQuery(new EntityQueryDesc
+		{
+			All = new ComponentType[1]
+			{
+				ComponentType.ReadWrite<Translation>()
+			},
+			Any = new ComponentType[0],
+			None = new ComponentType[0],
+			Options = EntityQueryOptions.Default
+		});
+		EFEWithScheduleGranularity_LambdaJob_1_Query = GetEntityQuery(new EntityQueryDesc
+		{
+			All = new ComponentType[1]
+			{
+				ComponentType.ReadWrite<Translation>()
+			},
+			Any = new ComponentType[0],
+			None = new ComponentType[0],
+			Options = EntityQueryOptions.Default
+		});
+		__Unity_Entities_CodeGen_Tests_Translation_RW_ComponentTypeHandle = GetComponentTypeHandle<Translation>();
+	}
+}
+
+

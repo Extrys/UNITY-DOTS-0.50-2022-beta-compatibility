@@ -1,0 +1,18 @@
+using System.Runtime.CompilerServices;
+using Unity.Entities;
+using UnityEngine;
+
+[DisallowMultipleComponent]
+[CompilerGenerated]
+[TestAttributeWithNoSpecificTarget]
+public class WithAttributeThatDoesNotSpecifyTargetAuthoring : MonoBehaviour, IConvertGameObjectToEntity
+{
+	public int MyInt;
+
+	public void Convert(Entity __entity, EntityManager __dstManager, GameObjectConversionSystem __conversionSystem)
+	{
+		WithAttributeThatDoesNotSpecifyTarget componentData = default(WithAttributeThatDoesNotSpecifyTarget);
+		componentData.MyInt = MyInt;
+		__dstManager.AddComponentData(__entity, componentData);
+	}
+}

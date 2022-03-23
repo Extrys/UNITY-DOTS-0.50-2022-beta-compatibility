@@ -1,0 +1,109 @@
+using AOT;
+using System;
+using System.Runtime.CompilerServices;
+using Unity.Burst;
+using Unity.Collections;
+using Unity.Entities;
+using Unity.Jobs.LowLevel.Unsafe;
+
+[CompilerGenerated]
+internal class EntitiesForEachWithFilter : SystemBase
+{
+	[NoAlias]
+	[BurstCompile(FloatMode = FloatMode.Default, FloatPrecision = FloatPrecision.Standard, CompileSynchronously = false)]
+	private struct EntitiesForEachWithFilter_LambdaJob_0_Job : IJobEntityBatch
+	{
+		internal static InternalCompilerInterface.JobEntityBatchRunWithoutJobSystemDelegateLimitEntities FunctionPtrFieldNoBurst;
+
+		internal static InternalCompilerInterface.JobEntityBatchRunWithoutJobSystemDelegateLimitEntities FunctionPtrFieldBurst;
+
+		public ComponentTypeHandle<Translation> __translationTypeHandle;
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private void OriginalLambdaBody([NoAlias] ref Translation translation)
+		{
+			translation.Value += 5f;
+		}
+
+		public void Execute(ArchetypeChunk chunk, int batchIndex)
+		{
+			IntPtr nativeArrayPtr = InternalCompilerInterface.UnsafeGetChunkNativeArrayIntPtr(chunk, __translationTypeHandle);
+			int count = chunk.Count;
+			for (int i = 0; i != count; i++)
+			{
+				OriginalLambdaBody(ref InternalCompilerInterface.UnsafeGetRefToNativeArrayPtrElement<Translation>(nativeArrayPtr, i));
+			}
+		}
+
+		[BurstCompile(FloatMode = FloatMode.Default, FloatPrecision = FloatPrecision.Standard, CompileSynchronously = false)]
+		[MonoPInvokeCallback(typeof(InternalCompilerInterface.JobEntityBatchRunWithoutJobSystemDelegate))]
+		public static void RunWithoutJobSystem(ref EntityQuery query, IntPtr limitToEntityArrayPtr, int limitToEntityArrayLength, IntPtr jobPtr)
+		{
+			try
+			{
+				JobEntityBatchExtensions.RunWithoutJobsInternal(ref InternalCompilerInterface.UnsafeAsRef<EntitiesForEachWithFilter_LambdaJob_0_Job>(jobPtr), ref query, limitToEntityArrayPtr, limitToEntityArrayLength);
+			}
+			finally
+			{
+			}
+		}
+	}
+
+	public NativeArray<Entity> Array = default(NativeArray<Entity>);
+
+	private EntityQuery EntitiesForEachWithFilter_LambdaJob_0_Query;
+
+	private ComponentTypeHandle<Translation> __Translation_RW_ComponentTypeHandle;
+
+	protected override void OnUpdate()
+	{
+		LambdaJobDescriptionExecutionMethods.Run(base.Entities.WithFilter(Array).ForEach(delegate(ref Translation translation)
+		{
+			translation.Value += 5f;
+		}));
+	}
+
+	[DOTSCompilerPatchedMethod("OnUpdate")]
+	protected void __OnUpdate_5E0EE114()
+	{
+		EntitiesForEachWithFilter_LambdaJob_0_Execute(Array);
+	}
+
+	private void EntitiesForEachWithFilter_LambdaJob_0_Execute(NativeArray<Entity> __entityArray)
+	{
+		__Translation_RW_ComponentTypeHandle.Update(this);
+		EntitiesForEachWithFilter_LambdaJob_0_Job entitiesForEachWithFilter_LambdaJob_0_Job = default(EntitiesForEachWithFilter_LambdaJob_0_Job);
+		entitiesForEachWithFilter_LambdaJob_0_Job.__translationTypeHandle = __Translation_RW_ComponentTypeHandle;
+		EntitiesForEachWithFilter_LambdaJob_0_Job jobData = entitiesForEachWithFilter_LambdaJob_0_Job;
+		CompleteDependency();
+		InternalCompilerInterface.JobEntityBatchRunWithoutJobSystemDelegateLimitEntities functionPointer = JobsUtility.JobCompilerEnabled ? EntitiesForEachWithFilter_LambdaJob_0_Job.FunctionPtrFieldBurst : EntitiesForEachWithFilter_LambdaJob_0_Job.FunctionPtrFieldNoBurst;
+		InternalCompilerInterface.UnsafeRunJobEntityBatch(ref jobData, EntitiesForEachWithFilter_LambdaJob_0_Query, InternalCompilerInterface.UnsafeGetEntityArrayIntPtr(__entityArray), __entityArray.Length, functionPointer);
+	}
+
+	protected override void OnCreateForCompiler()
+	{
+		base.OnCreateForCompiler();
+		EntitiesForEachWithFilter_LambdaJob_0_Query = GetEntityQuery(new EntityQueryDesc
+		{
+			All = new ComponentType[1]
+			{
+				ComponentType.ReadWrite<Translation>()
+			},
+			Any = new ComponentType[0],
+			None = new ComponentType[0],
+			Options = EntityQueryOptions.Default
+		});
+		__Translation_RW_ComponentTypeHandle = GetComponentTypeHandle<Translation>();
+		EntitiesForEachWithFilter_LambdaJob_0_Job.FunctionPtrFieldNoBurst = delegate(ref EntityQuery query, IntPtr limitToEntityArrayPtr, int limitToEntityArrayLength, IntPtr jobPtr)
+		{
+			try
+			{
+				JobEntityBatchExtensions.RunWithoutJobsInternal(ref InternalCompilerInterface.UnsafeAsRef<EntitiesForEachWithFilter_LambdaJob_0_Job>(jobPtr), ref query, limitToEntityArrayPtr, limitToEntityArrayLength);
+			}
+			finally
+			{
+			}
+		};
+		EntitiesForEachWithFilter_LambdaJob_0_Job.FunctionPtrFieldBurst = InternalCompilerInterface.BurstCompile(EntitiesForEachWithFilter_LambdaJob_0_Job.FunctionPtrFieldNoBurst);
+	}
+}
